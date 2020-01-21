@@ -1,10 +1,28 @@
-package tasks
+package tasks_test
+
+/*
+   Copyright 2020 TheRedSpy15
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 
 import (
 	"io/ioutil"
 	"os"
 	"path"
 	"testing"
+
+	tks "github.com/TheRedSpy15/Multi-Go/tasks"
 )
 
 func TestInstall(t *testing.T) {
@@ -17,7 +35,7 @@ func TestInstall(t *testing.T) {
 
 	cleanup()
 	t.Run("Creates Target Directory", func(t *testing.T) {
-		Install(target)
+		tks.Install(target)
 
 		i, err := os.Stat(target)
 		if err != nil || !i.IsDir() {
@@ -27,7 +45,7 @@ func TestInstall(t *testing.T) {
 	cleanup()
 
 	t.Run("Sets Execution Permission", func(t *testing.T) {
-		Install(target)
+		tks.Install(target)
 
 		files, err := ioutil.ReadDir(target)
 		if err != nil {
@@ -38,8 +56,8 @@ func TestInstall(t *testing.T) {
 		cleanup()
 
 		// check for overwritten file
-		Install(target)
-		Install(target)
+		tks.Install(target)
+		tks.Install(target)
 
 		files, err = ioutil.ReadDir(target)
 		if err != nil {
@@ -52,7 +70,7 @@ func TestInstall(t *testing.T) {
 
 	t.Run("Overwrites Existing File", func(t *testing.T) {
 		// get the name of the file
-		Install(target)
+		tks.Install(target)
 		files, err := ioutil.ReadDir(target)
 		if err != nil {
 			t.Fatal(err)
@@ -70,7 +88,7 @@ func TestInstall(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		Install(target)
+		tks.Install(target)
 
 		b, err := ioutil.ReadFile(name)
 		if err != nil {
